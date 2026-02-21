@@ -1,0 +1,23 @@
+# Node
+node_modules/
+
+# Logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Environnement
+.env
+
+# macOS
+.DS_Store
+
+# Python env (tu en avais un)
+.venv/
+
+# VSCode (optionnel)
+.vscode/
+
+# fichiers temporaires
+*.tmp
+*.log
