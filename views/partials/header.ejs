@@ -1,0 +1,39 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title><%= title %></title>
+  <link rel="stylesheet" href="/styles.css" />
+</head>
+
+<body class="<%= isAdmin ? 'admin' : '' %>">
+<header class="site-header">
+  <div class="container nav">
+    <div class="brand">
+      <strong>Mon serveur Express</strong>
+      <% if (login) { %>
+        <span class="badge">Bienvenue <%= login %></span>
+      <% } %>
+    </div>
+
+    <nav class="nav-links" aria-label="Navigation principale">
+      <a href="/">Accueil</a>
+      <a href="/about">À propos</a>
+      <a href="/contact">Contact</a>
+      <a href="/dab">DAB</a>
+      <a href="/error">Erreur volontaire</a>
+      <a href="/no-page-here">Page 404</a>
+
+      <% if (!login) { %>
+        <a href="/login">Connexion</a>
+      <% } else { %>
+        <form method="POST" action="/logout" class="inline-form">
+          <button type="submit">Déconnexion</button>
+        </form>
+      <% } %>
+    </nav>
+  </div>
+</header>
+
+<main class="container">

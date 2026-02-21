@@ -1,0 +1,16 @@
+<%- include('partials/header', { title }) %>
+
+<section class="card">
+  <h1>Erreur serveur</h1>
+  <p>Une erreur est survenue.</p>
+
+  <% if (typeof message !== "undefined" && message) { %>
+    <p class="error"><strong><%= message %></strong></p>
+  <% } %>
+
+  <p><a href="/">Retour accueil</a></p>
+</section>
+
+<%- include('partials/footer', {
+  footerText: "Page d'erreur"
+}) %>

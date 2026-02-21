@@ -1,0 +1,25 @@
+<%- include('partials/header', { title }) %>
+
+<section class="card">
+  <h1>Connexion administrateur</h1>
+
+  <% if (error) { %>
+    <p class="error"><strong><%= error %></strong></p>
+  <% } %>
+
+  <form method="POST" action="/login">
+    <label for="login">Login</label>
+    <input id="login" type="text" name="login" required />
+
+    <label for="password" style="display:block;margin-top:10px;">Password</label>
+    <input id="password" type="password" name="password" required />
+
+    <div style="margin-top:12px;">
+      <button type="submit">Se connecter</button>
+    </div>
+  </form>
+</section>
+
+<%- include('partials/footer', {
+  footerExtra: "Le statut admin est conservé en session."
+}) %>

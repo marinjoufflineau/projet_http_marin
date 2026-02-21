@@ -1,0 +1,19 @@
+<%- include('partials/header', { title }) %>
+
+<section class="card">
+  <h1>Accueil</h1>
+  <p>Bienvenue sur le site web.</p>
+
+  <% if (typeof message !== "undefined") { %>
+    <p><strong><%= message %></strong></p>
+  <% } %>
+</section>
+
+<%- include('partials/footer', {
+  footerText: "Bienvenue sur la page d'accueil",
+  footerExtra: "Serveur Express + EJS",
+  footerLinks: [
+    { href: "/", label: "Accueil" },
+    { href: "/contact", label: "Contact" }
+  ]
+}) %>
