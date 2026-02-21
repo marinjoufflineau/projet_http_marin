@@ -2,39 +2,53 @@
 
 <section class="card">
   <h1>Distributeur de billets</h1>
+  <p class="muted">Saisis un montant (avec centimes). Exemple : 137.45</p>
 
-  <form method="POST" action="/dab" style="margin-top:12px;">
-    <label for="amount">Montant (€)</label>
-    <input id="amount" name="amount" type="number" min="0" step="0.01"
-       placeholder="Ex: 137.45" required />
+  <form method="POST" action="/dab" class="form-row">
+    <div class="form-col">
+      <label for="amount">Montant (€)</label>
+      <input id="amount" name="amount" type="number" min="0" step="0.01"
+             value="<%= typeof amount !== 'undefined' ? amount : '' %>"
+             placeholder="Ex: 137.45" required />
+    </div>
 
-
-    <div style="margin-top:12px;">
+    <div class="form-col form-col-btn">
       <button type="submit">Calculer</button>
     </div>
   </form>
 
   <% if (result) { %>
-    <hr style="margin:18px 0; border:none; border-top:1px solid rgba(0,0,0,.12);" />
+    <div class="divider"></div>
 
     <p>Montant demandé : <strong><%= amount %></strong></p>
 
     <% if (!result.ok) { %>
       <p class="error"><strong><%= result.error %></strong></p>
     <% } else { %>
-      <p>Nombre minimal de coupures : <strong><%= result.billsCount %></strong></p>
+      <p>Nombre minimal de coupures/pièces : <strong><%= result.billsCount %></strong></p>
 
-      <ul>
-        <% result.breakdown.forEach(x => { %>
-          <% if (x.type === "€") { %>
-            <li><strong><%= x.count %></strong> × <%= x.value %> €</li>
-          <% } else { %>
-            <li><strong><%= x.count %></strong> × <%= x.value %> centimes</li>
-          <% } %>
-        <% }) %>
-      </ul>      
+      <div class="table-wrap">
+        <table class="table">
+          <thead>
+            <tr>
+              <th>Type</th>
+              <th>Valeur</th>
+              <th>Quantité</th>
+            </tr>
+          </thead>
+          <tbody>
+            <% result.breakdown.forEach(x => { %>
+              <tr>
+                <td><%= x.type === "€" ? "€" : "cent" %></td>
+                <td><%= x.type === "€" ? `${x.value} €` : `${x.value} c` %></td>
+                <td><strong><%= x.count %></strong></td>
+              </tr>
+            <% }) %>
+          </tbody>
+        </table>
+      </div>
     <% } %>
   <% } %>
 </section>
 
-<%- include('partials/footer', { footerText: "Simulation du DAB" }) %>
+<%- include('partials/footer', { footerText: "DAB — Calcul dynamique" }) %>

@@ -4,6 +4,8 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title><%= title %></title>
+
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
   <link rel="stylesheet" href="/styles.css" />
 </head>
 
@@ -11,22 +13,25 @@
 <header class="site-header">
   <div class="container nav">
     <div class="brand">
-      <strong>Mon serveur Express</strong>
+      <a class="brand-link" href="/">
+        <span class="brand-dot"></span>
+        <strong>Projet HTTP</strong>
+      </a>
+
       <% if (login) { %>
         <span class="badge">Bienvenue <%= login %></span>
       <% } %>
     </div>
 
     <nav class="nav-links" aria-label="Navigation principale">
-      <a href="/">Accueil</a>
-      <a href="/about">À propos</a>
-      <a href="/contact">Contact</a>
-      <a href="/dab">DAB</a>
-      <a href="/error">Erreur volontaire</a>
-      <a href="/no-page-here">Page 404</a>
+      <a class="<%= currentPath === '/' ? 'active' : '' %>" href="/">Accueil</a>
+      <a class="<%= currentPath === '/about' ? 'active' : '' %>" href="/about">À propos</a>
+      <a class="<%= currentPath === '/contact' ? 'active' : '' %>" href="/contact">Contact</a>
+      <a class="<%= currentPath.startsWith('/dab') ? 'active' : '' %>" href="/dab">DAB</a>
+      <a class="<%= currentPath === '/error' ? 'active' : '' %>" href="/error">Erreur</a>
 
       <% if (!login) { %>
-        <a href="/login">Connexion</a>
+        <a class="<%= currentPath === '/login' ? 'active' : '' %>" href="/login">Connexion</a>
       <% } else { %>
         <form method="POST" action="/logout" class="inline-form">
           <button type="submit">Déconnexion</button>

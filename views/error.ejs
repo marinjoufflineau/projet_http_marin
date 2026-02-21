@@ -1,16 +1,16 @@
 <%- include('partials/header', { title }) %>
 
-<section class="card">
+<section class="card center">
   <h1>Erreur serveur</h1>
-  <p>Une erreur est survenue.</p>
+  <p class="muted">Une erreur est survenue.</p>
 
   <% if (typeof message !== "undefined" && message) { %>
     <p class="error"><strong><%= message %></strong></p>
   <% } %>
 
-  <p><a href="/">Retour accueil</a></p>
+  <div class="hero-actions">
+    <a class="btn-link" href="/">Retour accueil</a>
+  </div>
 </section>
 
-<%- include('partials/footer', {
-  footerText: "Page d'erreur"
-}) %>
+<%- include('partials/footer', { footerText: "Erreur serveur" }) %>

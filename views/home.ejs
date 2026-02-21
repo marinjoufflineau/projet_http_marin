@@ -1,19 +1,62 @@
 <%- include('partials/header', { title }) %>
 
-<section class="card">
-  <h1>Accueil</h1>
-  <p>Bienvenue sur le site web.</p>
+<section class="hero">
+  <div class="hero-content">
+    <h1>Serveur Express — TP WebServer</h1>
+    <p class="muted">
+      Templates EJS, includes header/footer, sessions admin, routes, 404/500, et DAB dynamique (avec centimes).
+    </p>
 
-  <% if (typeof message !== "undefined") { %>
-    <p><strong><%= message %></strong></p>
-  <% } %>
+    <div class="hero-actions">
+      <a class="btn-link" href="/dab">Tester le DAB</a>
+      <% if (!login) { %>
+        <a class="btn-link ghost" href="/login">Connexion admin</a>
+      <% } %>
+    </div>
+
+    <% if (typeof message !== "undefined") { %>
+      <p class="note"><strong><%= message %></strong></p>
+    <% } %>
+  </div>
+</section>
+
+<section class="grid">
+  <article class="card">
+    <h2>Routes</h2>
+    <p class="muted">Navigation multi-pages, routes dynamiques, et gestion des erreurs.</p>
+    <ul class="list">
+      <li><code>/user/:name</code> message dynamique</li>
+      <li><code>/error</code> erreur volontaire</li>
+      <li><code>404</code> page dédiée</li>
+    </ul>
+  </article>
+
+  <article class="card">
+    <h2>Admin</h2>
+    <p class="muted">Session + thème visuel admin sur tout le site.</p>
+    <ul class="list">
+      <li>Login: <code>admin</code></li>
+      <li>Password: <code>admin</code></li>
+      <li>Déconnexion via bouton</li>
+    </ul>
+  </article>
+
+  <article class="card">
+    <h2>DAB</h2>
+    <p class="muted">Calcul du nombre minimal de coupures + pièces en centimes.</p>
+    <ul class="list">
+      <li><code>/dab</code> formulaire</li>
+      <li><code>/dab/137.45</code> route dynamique</li>
+      <li>Affichage propre en tableau</li>
+    </ul>
+  </article>
 </section>
 
 <%- include('partials/footer', {
-  footerText: "Bienvenue sur la page d'accueil",
-  footerExtra: "Serveur Express + EJS",
+  footerText: "Accueil — Projet TP WebServer",
   footerLinks: [
-    { href: "/", label: "Accueil" },
-    { href: "/contact", label: "Contact" }
+    { href: "/about", label: "À propos" },
+    { href: "/contact", label: "Contact" },
+    { href: "/dab", label: "DAB" }
   ]
 }) %>

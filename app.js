@@ -11,6 +11,10 @@ const __dirname = path.dirname(__filename);
 
 const app = express();
 
+/* =========================
+   CONFIGURATION
+========================= */
+
 app.set("view engine", "ejs");
 app.set("views", path.join(__dirname, "views"));
 
@@ -25,14 +29,21 @@ app.use(
   })
 );
 
-// Variables globales pour toutes les vues
+/* =========================
+   VARIABLES GLOBALES VUES
+========================= */
+
 app.use((req, res, next) => {
   res.locals.isAdmin = req.session.isAdmin === true;
   res.locals.login = req.session.login || null;
+  res.locals.currentPath = req.path;
   next();
 });
 
-// ---- ROUTES ----
+/* =========================
+   ROUTES PRINCIPALES
+========================= */
+
 app.get("/", (req, res) => {
   res.render("home", { title: "Accueil" });
 });
@@ -45,7 +56,10 @@ app.get("/contact", (req, res) => {
   res.render("contact", { title: "Contact" });
 });
 
-// Route dynamique
+/* =========================
+   ROUTE DYNAMIQUE USER
+========================= */
+
 app.get("/user/:name", (req, res) => {
   res.render("home", {
     title: "Utilisateur",
@@ -53,7 +67,10 @@ app.get("/user/:name", (req, res) => {
   });
 });
 
-// ---- LOGIN ----
+/* =========================
+   LOGIN ADMIN
+========================= */
+
 app.get("/login", (req, res) => {
   res.render("login", { title: "Connexion", error: null });
 });
@@ -67,59 +84,83 @@ app.post("/login", (req, res) => {
     return res.redirect("/");
   }
 
-  res.status(401).render("login", {
+  res.render("login", {
     title: "Connexion",
     error: "Identifiants invalides (admin/admin)",
   });
 });
 
-// ---- LOGOUT ----
+/* =========================
+   LOGOUT
+========================= */
+
 app.post("/logout", (req, res) => {
-  req.session.destroy(() => res.redirect("/"));
+  req.session.destroy(() => {
+    res.redirect("/");
+  });
 });
 
-// ---- DAB ----
+/* =========================
+   DAB (GET + POST)
+========================= */
+
 app.get("/dab", (req, res) => {
-    res.render("dab", {
-      title: "Distributeur de billets",
-      amount: "",
-      result: null,
-    });
-  });
-  
-  app.post("/dab", (req, res) => {
-    const { amount } = req.body;
-    return res.redirect(`/dab/${encodeURIComponent(amount)}`);
-  });
-  
-app.get("/dab/:amount", (req, res) => {
-  const result = computeBills(req.params.amount);
+  res.render("dab", { title: "Distributeur", result: null });
+});
+
+app.post("/dab", (req, res) => {
+  const amount = req.body.amount;
+  const result = computeBills(amount);
 
   res.render("dab", {
-    title: "Distributeur de billets",
-    amount: req.params.amount,
+    title: "Distributeur",
+    amount,
     result,
   });
 });
 
-// ---- PAGE ERREUR (visible dans le menu) ----
-app.get("/error", (req, res) => {
-  throw new Error("Ceci est une erreur test.");
-});
+app.get("/dab/:amount", (req, res) => {
+  const amount = req.params.amount;
+  const result = computeBills(amount);
 
-// ---- 404 ----
-app.use((req, res) => {
-  res.status(404).render("404", { title: "404 - Page introuvable" });
-});
-
-// ---- 500 (handler d'erreur Express) ----
-app.use((err, req, res, next) => {
-  console.error(err);
-  res.status(500).render("error", {
-    title: "Erreur",
-    message: err.message || "Erreur interne",
+  res.render("dab", {
+    title: "Distributeur",
+    amount,
+    result,
   });
 });
+
+/* =========================
+   PAGE ERREUR TEST
+========================= */
+
+app.get("/error", (req, res, next) => {
+  next(new Error("Erreur volontaire déclenchée."));
+});
+
+/* =========================
+   404
+========================= */
+
+app.use((req, res) => {
+  res.status(404).render("404", { title: "404" });
+});
+
+/* =========================
+   ERREUR GLOBALE
+========================= */
+
+app.use((err, req, res, next) => {
+  console.error(err.stack);
+  res.status(500).render("error", {
+    title: "Erreur",
+    message: err.message,
+  });
+});
+
+/* =========================
+   SERVEUR
+========================= */
 
 app.listen(8080, () => {
   console.log("Serveur Express lancé sur http://localhost:8080");
